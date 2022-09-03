@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.TAssignmentMapper">
+    
+    <resultMap type="TAssignment" id="TAssignmentResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="workUnit"    column="work_unit"    />
+        <result property="project"    column="project"    />
+        <result property="beginTime"    column="begin_time"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="personName"    column="person_name"    />
+        <result property="personNo"    column="person_no"    />
+        <result property="icCard"    column="ic_card"    />
+        <result property="department"    column="department"    />
+        <result property="status"    column="status"    />
+    </resultMap>
+
+    <sql id="selectTAssignmentVo">
+        select id, name, work_unit, project, begin_time, end_time, person_name, person_no, ic_card, department, status from t_assignment
+    </sql>
+
+    <select id="selectTAssignmentList" parameterType="TAssignment" resultMap="TAssignmentResult">
+        <include refid="selectTAssignmentVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="workUnit != null  and workUnit != ''"> and work_unit = #{workUnit}</if>
+            <if test="project != null  and project != ''"> and project = #{project}</if>
+            <if test="beginTime != null "> and begin_time = #{beginTime}</if>
+            <if test="endTime != null "> and end_time = #{endTime}</if>
+            <if test="personName != null  and personName != ''"> and person_name like concat('%', #{personName}, '%')</if>
+            <if test="personNo != null  and personNo != ''"> and person_no = #{personNo}</if>
+            <if test="icCard != null  and icCard != ''"> and ic_card = #{icCard}</if>
+            <if test="department != null  and department != ''"> and department = #{department}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectTAssignmentById" parameterType="Long" resultMap="TAssignmentResult">
+        <include refid="selectTAssignmentVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTAssignment" parameterType="TAssignment">
+        insert into t_assignment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null">name,</if>
+            <if test="workUnit != null">work_unit,</if>
+            <if test="project != null">project,</if>
+            <if test="beginTime != null">begin_time,</if>
+            <if test="endTime != null">end_time,</if>
+            <if test="personName != null">person_name,</if>
+            <if test="personNo != null">person_no,</if>
+            <if test="icCard != null">ic_card,</if>
+            <if test="department != null">department,</if>
+            <if test="status != null">status,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null">#{name},</if>
+            <if test="workUnit != null">#{workUnit},</if>
+            <if test="project != null">#{project},</if>
+            <if test="beginTime != null">#{beginTime},</if>
+            <if test="endTime != null">#{endTime},</if>
+            <if test="personName != null">#{personName},</if>
+            <if test="personNo != null">#{personNo},</if>
+            <if test="icCard != null">#{icCard},</if>
+            <if test="department != null">#{department},</if>
+            <if test="status != null">#{status},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTAssignment" parameterType="TAssignment">
+        update t_assignment
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="workUnit != null">work_unit = #{workUnit},</if>
+            <if test="project != null">project = #{project},</if>
+            <if test="beginTime != null">begin_time = #{beginTime},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+            <if test="personName != null">person_name = #{personName},</if>
+            <if test="personNo != null">person_no = #{personNo},</if>
+            <if test="icCard != null">ic_card = #{icCard},</if>
+            <if test="department != null">department = #{department},</if>
+            <if test="status != null">status = #{status},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTAssignmentById" parameterType="Long">
+        delete from t_assignment where id = #{id}
+    </delete>
+
+    <delete id="deleteTAssignmentByIds" parameterType="String">
+        delete from t_assignment where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
